@@ -15,12 +15,25 @@ class MusicType
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
+
     #[ORM\OneToMany(targetEntity: Band::class, mappedBy: 'musicType')]
     private Collection $band;
 
     public function __construct()
     {
         $this->band = new ArrayCollection();
+    }
+
+    public function getType(): string {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self {
+        $this->type = $type;
+
+        return $this;
     }
 
     public function getId(): ?int

@@ -36,13 +36,13 @@ class CountryRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Country
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+public function findByName($name): ?Country
+{
+    return $this->createQueryBuilder('c')
+        ->andWhere('c.name = :name')
+        ->setParameter('name', $name)
+        ->getQuery()
+        ->getOneOrNullResult()
+    ;
+}
 }

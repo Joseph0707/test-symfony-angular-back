@@ -27,19 +27,21 @@ class Band
     private City $city;
 
     #[ORM\OneToMany(targetEntity: Founder::class, mappedBy: 'band')]
-    private Collection $founder;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Collection $founder;
 
     #[ORM\ManyToOne(targetEntity: MusicType::class, inversedBy: 'band')]
-    private MusicType $musicType;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?MusicType $musicType;
 
     #[ORM\Column(length: 255)]
     private ?int $beginningYears = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?int $endingYears = null;
 
-    #[ORM\Column(length: 255)]
-    private ?int $members = 0;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?int $members = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -88,7 +90,7 @@ class Band
         return $this->founder;
     }
 
-    public function setFounder(Founder $founder): self {
+    public function setFounder(?Founder $founder): self {
         $this->founder = $founder;
 
         return $this;
@@ -98,7 +100,7 @@ class Band
         return $this->musicType;
     }
 
-    public function setMusicType(MusicType $musicType): self {
+    public function setMusicType(?MusicType $musicType): self {
         $this->musicType = $musicType;
 
         return $this;
@@ -118,7 +120,7 @@ class Band
         return $this->endingYears;
     }
 
-    public function setEndingYears(int $endingYears): self {
+    public function setEndingYears(?int $endingYears): self {
         $this->endingYears = $endingYears;
 
         return $this;
@@ -128,7 +130,7 @@ class Band
         return $this->members;
     }
 
-    public function setMembers(int $members): self {
+    public function setMembers(?int $members): self {
         $this->members = $members;
 
         return $this;

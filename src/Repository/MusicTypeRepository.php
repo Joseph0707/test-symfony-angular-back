@@ -36,13 +36,13 @@ class MusicTypeRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MusicType
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+public function findByName($type): ?MusicType
+{
+    return $this->createQueryBuilder('m')
+        ->andWhere('m.type = :type')
+        ->setParameter('type', $type)
+        ->getQuery()
+        ->getOneOrNullResult()
+    ;
+}
 }

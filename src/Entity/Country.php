@@ -15,6 +15,9 @@ class Country
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     #[ORM\OneToMany(targetEntity: Band::class, mappedBy: 'country')]
     private Collection $band;
 
@@ -28,13 +31,25 @@ class Country
         return $this->id;
     }
 
-    public function getBand(): Collection {
+    public function getName(): string {
+        return $this->name;
+    }
+
+    public function setName(string $name): self {
+        $this->name = $name;
+        
+        return $this;
+    }
+
+    public function getBand(): Collection
+    {
         return $this->band;
     }
 
-    public function setBand(Band $band): self {
+    public function setBand(Band $band): self
+    {
         $this->band = $band;
-        
+
         return $this;
     }
 }

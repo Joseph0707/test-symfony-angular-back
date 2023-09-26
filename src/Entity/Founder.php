@@ -13,12 +13,25 @@ class Founder
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'founder')]
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\ManyToOne(targetEntity: Band::class, inversedBy: 'founder')]
     private Band $band;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): string {
+        return $this->name;
+    }
+
+    public function setName(string $name): self {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function getBand(): ?Band
