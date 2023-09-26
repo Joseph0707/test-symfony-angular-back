@@ -37,7 +37,7 @@ class ParseFileController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/api/parse-file', name: 'app_parse_file')]
+    #[Route('/api/parse-file', name: 'app_parse_file', methods: ['POST'])]
     public function uploadXlsFile(Request $request, ParseFIleService $parseFIleService): JsonResponse
     {
         $file = $request->files->get('file');
@@ -104,8 +104,8 @@ class ParseFileController extends AbstractController
         }
     }
 
-    #[Route('/api/bands', name: 'app_get_all_band')]
-    function getAllBand()
+    #[Route('/api/bands', name: 'app_get_all_band', methods:['GET'])]
+    public function getAllBand(): JsonResponse
     {
         try {
             $results = [];
@@ -136,6 +136,49 @@ class ParseFileController extends AbstractController
                     'description' => $band->getDescription()
                 ];
             }
+            return $this->json(
+                $results,
+                headers: ['Content-Type' => 'application/json;charset=UTF-8']
+            );
+        } catch (Error $e) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'there was an error',
+                'error' => $e
+            ]);
+        }
+    }
+
+    #[Route('/api/bands/{id}', name: 'app_get_band_by_id', methods:['GET'])]
+    public function getBandById(int $id): JsonResponse
+    {
+        try {
+            $results = [];
+            $band = $this->entityManager->getRepository(Band::class)->findOneBy(['id' => $id]);
+            $founders = [];
+            $musicType = null;
+
+            if (!is_null($band->getMusicType()))
+                $musicType = $band->getMusicType()->getType();
+
+            foreach ($band->getFounder()->getValues() as $founder) {
+                $founders[] = ['id' => $founder->getId(), 'name' => $founder->getName()];
+            }
+
+            $results[] = [
+                'id' => $band->getId(),
+                'groupName' => $band->getGroupName(),
+                'country' => $band->getCountry()->getName(),
+                'city' => $band->getCity()->getName(),
+                'beginningYears' => $band->getBeginningYears(),
+                'endingYears' => $band->getEndingYears(),
+                'founders' => $founders,
+                'members' => $band->getMembers(),
+                'musicType' => [
+                    'type' => $musicType
+                ],
+                'description' => $band->getDescription()
+            ];
             return $this->json(
                 $results,
                 headers: ['Content-Type' => 'application/json;charset=UTF-8']
