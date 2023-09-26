@@ -86,7 +86,7 @@ class Band
         return $this;
     }
 
-    public function Founder(): Collection {
+    public function getFounder(): Collection {
         return $this->founder;
     }
 
@@ -96,7 +96,7 @@ class Band
         return $this;
     }
 
-    public function getMusicType(): MusicType {
+    public function getMusicType(): ?MusicType {
         return $this->musicType;
     }
 
@@ -106,7 +106,7 @@ class Band
         return $this;
     }
 
-    public function getBeginningYears(): int {
+    public function getBeginningYears(): ?int {
         return $this->beginningYears;
     }
 
@@ -116,7 +116,7 @@ class Band
         return $this;
     }
 
-    public function getEndingYears(): int {
+    public function getEndingYears(): ?int {
         return $this->endingYears;
     }
 
@@ -126,7 +126,7 @@ class Band
         return $this;
     }
 
-    public function getMembers(): int {
+    public function getMembers(): ?int {
         return $this->members;
     }
 

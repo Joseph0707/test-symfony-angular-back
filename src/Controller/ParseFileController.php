@@ -103,4 +103,51 @@ class ParseFileController extends AbstractController
             ]);
         }
     }
+
+    #[Route('/api/bands', name: 'app_get_all_band')]
+    function getAllBand()
+    {
+        // try {
+        $results = [];
+        $bands = $this->entityManager->getRepository(Band::class)->findAll();
+        // dd($bands);
+        foreach ($bands as $band) {
+            $founders = [];
+            $musicType = null;
+
+            if(!is_null($band->getMusicType())) 
+                $musicType = $band->getMusicType()->getType();
+            
+            foreach($band->getFounder()->getValues() as $founder) {
+                $founders[] = ['id' => $founder->getId(), 'name' => $founder->getName()];
+            }
+            
+            $results[] = [
+                'id' => $band->getId(),
+                'groupName' => $band->getGroupName(),
+                'country' => $band->getCountry()->getName(),
+                'city' => $band->getCity()->getName(),
+                'beginningYears' => $band->getBeginningYears(),
+                'endingYears' => $band->getEndingYears(),
+                'founders' => $founders,
+                'members' => $band->getMembers(),
+                'musicType' => [
+                    'type' => $musicType
+                ],
+                'description' => $band->getDescription()
+            ];
+        }
+        // dd($bands);
+        return $this->json(
+            ['bands' => $results],
+            headers: ['Content-Type' => 'application/json;charset=UTF-8']
+        );
+        // } catch (Error $e) {
+        //     return new JsonResponse([
+        //         'success' => false,
+        //         'message' => 'there was an error',
+        //         'error' => $e
+        //     ]);
+        // }
+    }
 }
