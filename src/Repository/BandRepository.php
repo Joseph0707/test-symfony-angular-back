@@ -21,20 +21,20 @@ class BandRepository extends ServiceEntityRepository
         parent::__construct($registry, Band::class);
     }
 
-//    /**
-//     * @return Band[] Returns an array of Band objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Band[] Returns an array of Band objects
+    */
+   public function findAllByName($name): array
+   {
+       return $this->createQueryBuilder('b')
+           ->andWhere('b.groupName LIKE :name')
+           ->setParameter('name', '%'.$name.'%')
+           ->orderBy('b.id', 'ASC')
+           ->setMaxResults(10)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Band
 //    {

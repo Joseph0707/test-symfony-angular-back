@@ -105,11 +105,12 @@ class ParseFileController extends AbstractController
     }
 
     #[Route('/api/bands', name: 'app_get_all_band', methods:['GET'])]
-    public function getAllBand(): JsonResponse
+    public function getAllBand(Request $request): JsonResponse
     {
+        $name = $request->query->get('name');
         try {
             $results = [];
-            $bands = $this->entityManager->getRepository(Band::class)->findAll();
+            $bands = $this->bandRepository->findAllByName($name);
             foreach ($bands as $band) {
                 $founders = [];
                 $musicType = null;
