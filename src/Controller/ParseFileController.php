@@ -42,8 +42,8 @@ class ParseFileController extends AbstractController
     {
         $file = $request->files->get('file');
 
-        $parsedFile = $parseFIleService->parseFile($file);
         try {
+            $parsedFile = $parseFIleService->parseFile($file);
             foreach ($parsedFile as $brand) {
                 $bandToAdd = new Band();
                 $city = $this->cityRepository->findByName($brand['C']);
@@ -107,47 +107,45 @@ class ParseFileController extends AbstractController
     #[Route('/api/bands', name: 'app_get_all_band')]
     function getAllBand()
     {
-        // try {
-        $results = [];
-        $bands = $this->entityManager->getRepository(Band::class)->findAll();
-        // dd($bands);
-        foreach ($bands as $band) {
-            $founders = [];
-            $musicType = null;
+        try {
+            $results = [];
+            $bands = $this->entityManager->getRepository(Band::class)->findAll();
+            foreach ($bands as $band) {
+                $founders = [];
+                $musicType = null;
 
-            if(!is_null($band->getMusicType())) 
-                $musicType = $band->getMusicType()->getType();
-            
-            foreach($band->getFounder()->getValues() as $founder) {
-                $founders[] = ['id' => $founder->getId(), 'name' => $founder->getName()];
+                if (!is_null($band->getMusicType()))
+                    $musicType = $band->getMusicType()->getType();
+
+                foreach ($band->getFounder()->getValues() as $founder) {
+                    $founders[] = ['id' => $founder->getId(), 'name' => $founder->getName()];
+                }
+
+                $results[] = [
+                    'id' => $band->getId(),
+                    'groupName' => $band->getGroupName(),
+                    'country' => $band->getCountry()->getName(),
+                    'city' => $band->getCity()->getName(),
+                    'beginningYears' => $band->getBeginningYears(),
+                    'endingYears' => $band->getEndingYears(),
+                    'founders' => $founders,
+                    'members' => $band->getMembers(),
+                    'musicType' => [
+                        'type' => $musicType
+                    ],
+                    'description' => $band->getDescription()
+                ];
             }
-            
-            $results[] = [
-                'id' => $band->getId(),
-                'groupName' => $band->getGroupName(),
-                'country' => $band->getCountry()->getName(),
-                'city' => $band->getCity()->getName(),
-                'beginningYears' => $band->getBeginningYears(),
-                'endingYears' => $band->getEndingYears(),
-                'founders' => $founders,
-                'members' => $band->getMembers(),
-                'musicType' => [
-                    'type' => $musicType
-                ],
-                'description' => $band->getDescription()
-            ];
+            return $this->json(
+                $results,
+                headers: ['Content-Type' => 'application/json;charset=UTF-8']
+            );
+        } catch (Error $e) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'there was an error',
+                'error' => $e
+            ]);
         }
-        // dd($bands);
-        return $this->json(
-            ['bands' => $results],
-            headers: ['Content-Type' => 'application/json;charset=UTF-8']
-        );
-        // } catch (Error $e) {
-        //     return new JsonResponse([
-        //         'success' => false,
-        //         'message' => 'there was an error',
-        //         'error' => $e
-        //     ]);
-        // }
     }
 }
