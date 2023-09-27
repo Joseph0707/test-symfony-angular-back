@@ -61,7 +61,7 @@ class ParseFileController extends AbstractController
             $musicTypes[$musicType->getType()] = $musicType;
         }
 
-        // try {
+        try {
             $parsedFile = $parseFIleService->parseFile($file);
             foreach ($parsedFile as $brand) {
                 $bandToAdd = new Band();
@@ -120,13 +120,13 @@ class ParseFileController extends AbstractController
                 'success' => true,
                 'message' => 'File uploaded successfully',
             ]);
-        // } catch (Error $e) {
-        //     return new JsonResponse([
-        //         'success' => false,
-        //         'message' => 'there was an error',
-        //         'error' => $e
-        //     ]);
-        // }
+        } catch (Error $e) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'there was an error',
+                'error' => $e
+            ]);
+        }
     }
 
     #[Route('/api/bands', name: 'app_get_all_band', methods: ['GET'])]
