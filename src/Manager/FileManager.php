@@ -12,10 +12,14 @@ use App\Repository\CountryRepository;
 use App\Repository\MusicTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class FileManager {
-    public function __construct(private CityRepository $cityRepository, private CountryRepository $countryRepository, private MusicTypeRepository $musicTypeRepository, private EntityManagerInterface $entityManager)
+class FileManager
+{
+    public function __construct(
+        private CityRepository $cityRepository, 
+        private CountryRepository $countryRepository, 
+        private MusicTypeRepository $musicTypeRepository, 
+        private EntityManagerInterface $entityManager)
     {
-        
     }
     private function allCities(): array
     {
@@ -92,7 +96,6 @@ class FileManager {
             $bandToAdd->setMusicType($musicType);
             $bandToAdd->setDescription($brand['I']);
             $this->entityManager->persist($bandToAdd);
-            $this->entityManager->flush();
 
             foreach ($brand['F'] as $founders) {
                 if (!is_null($founders)) {
@@ -100,9 +103,9 @@ class FileManager {
                     $founder->setBand($bandToAdd);
                     $founder->setName($founders);
                     $this->entityManager->persist($founder);
-                    $this->entityManager->flush();
                 }
             }
         }
+        $this->entityManager->flush();
     }
 }

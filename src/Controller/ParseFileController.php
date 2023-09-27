@@ -3,14 +3,9 @@
 namespace App\Controller;
 
 use App\Manager\FileManager as ManagerFileManager;
-use App\Repository\BandRepository;
-use App\Repository\CityRepository;
-use App\Repository\CountryRepository;
-use App\Repository\MusicTypeRepository;
 use App\Service\ParseFileService;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
-use FileManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +15,6 @@ class ParseFileController extends AbstractController
 {
 
     public function __construct(
-        private CityRepository $cityRepository,
-        private CountryRepository $countryRepository,
-        private MusicTypeRepository $musicTypeRepository,
-        private BandRepository $bandRepository,
         private EntityManagerInterface $entityManager,
         private ManagerFileManager $fileManager,
     ) {
