@@ -11,7 +11,7 @@ use App\Repository\BandRepository;
 use App\Repository\CityRepository;
 use App\Repository\CountryRepository;
 use App\Repository\MusicTypeRepository;
-use App\Service\ParseFIleService;
+use App\Service\ParseFileService;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -116,12 +116,12 @@ class ParseFileController extends AbstractController
     }
 
     #[Route('/api/parse-file', name: 'app_parse_file', methods: ['POST'])]
-    public function uploadXlsFile(Request $request, ParseFIleService $parseFIleService): JsonResponse
+    public function uploadXlsFile(Request $request, ParseFileService $parseFileService): JsonResponse
     {
         $file = $request->files->get('file');
 
         try {
-            $parsedFile = $parseFIleService->parseFile($file);
+            $parsedFile = $parseFileService->parseFile($file);
             $this->addBand($parsedFile);
             return new JsonResponse([
                 'success' => true,

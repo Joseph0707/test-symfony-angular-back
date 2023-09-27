@@ -13,8 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BandController extends AbstractController
 {
     public function __construct(private BandRepository $bandRepository, private EntityManagerInterface $entityManager)
-     {
-        
+    {
     }
     #[Route('/api/bands', name: 'app_get_all_band', methods: ['GET'])]
     public function getAllBand(Request $request): JsonResponse

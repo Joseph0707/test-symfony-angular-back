@@ -2,10 +2,9 @@
 
 namespace App\Service;
 
-use Doctrine\Common\Collections\Expr\Value;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class ParseFIleService
+class ParseFileService
 {
 
     public function parseFile($file)
