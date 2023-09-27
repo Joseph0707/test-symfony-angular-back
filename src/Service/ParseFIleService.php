@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Doctrine\Common\Collections\Expr\Value;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ParseFIleService
@@ -24,6 +25,11 @@ class ParseFIleService
                             $founderArray[] = $separedByComas;
                         }
                     } else $founderArray[] = $founder;
+                }
+            } else if (strpos($value['F'], ",")){
+                $founders = explode(',', $value['F']);
+                foreach($founders as $founder){
+                    $founderArray[] = $founder;
                 }
             }
             else $founderArray[] = $value['F'];

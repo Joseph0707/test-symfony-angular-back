@@ -18,7 +18,7 @@ class Country
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: Band::class, mappedBy: 'country')]
+    #[ORM\OneToMany(targetEntity: Band::class, mappedBy: 'country', cascade: ['persist'])]
     private Collection $band;
 
     public function __construct()

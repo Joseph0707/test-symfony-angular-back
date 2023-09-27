@@ -21,28 +21,23 @@ class MusicTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, MusicType::class);
     }
 
-//    /**
-//     * @return MusicType[] Returns an array of MusicType objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return MusicType[] Returns an array of MusicType objects
+     */
+    public function getAllMusicTypes(): array
+    {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
-public function findByName($type): ?MusicType
-{
-    return $this->createQueryBuilder('m')
-        ->andWhere('m.type = :type')
-        ->setParameter('type', $type)
-        ->getQuery()
-        ->getOneOrNullResult()
-    ;
-}
+    public function findByName($type): ?MusicType
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.type = :type')
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -15,13 +15,14 @@ class City
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
-    #[ORM\OneToMany(targetEntity: Band::class, mappedBy: 'city')]
+    
+    #[ORM\OneToMany(targetEntity: Band::class, mappedBy: 'city', cascade: ['persist'])]
     private Collection $band;
-
-    public function __construct()
+    
+    public function __construct(
+        #[ORM\Column(length: 255)]
+        private ?string $name = null,        
+    )
     {
         $this->band = new ArrayCollection();
     }

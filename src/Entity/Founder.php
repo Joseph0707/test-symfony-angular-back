@@ -16,7 +16,7 @@ class Founder
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(targetEntity: Band::class, inversedBy: 'founder')]
+    #[ORM\ManyToOne(targetEntity: Band::class, inversedBy: 'founder', cascade: ['persist'])]
     private Band $band;
 
     public function getId(): ?int

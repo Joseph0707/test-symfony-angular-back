@@ -41,42 +41,67 @@ class ParseFileController extends AbstractController
     public function uploadXlsFile(Request $request, ParseFIleService $parseFIleService): JsonResponse
     {
         $file = $request->files->get('file');
+        $allCities = $this->cityRepository->findAll();
+        $allCountries = $this->countryRepository->findAll();
+        $allMusicType = $this->musicTypeRepository->findAll();
+        $cities = [];
+        $countries = [];
+        $musicTypes = [];
 
-        try {
+
+        foreach ($allCities as $city) {
+            $cities[$city->getName()] = $city;
+        }
+
+        foreach ($allCountries as $country) {
+            $countries[$country->getName()] = $country;
+        }
+
+        foreach ($allMusicType as $musicType) {
+            $musicTypes[$musicType->getType()] = $musicType;
+        }
+
+        // try {
             $parsedFile = $parseFIleService->parseFile($file);
             foreach ($parsedFile as $brand) {
                 $bandToAdd = new Band();
-                $city = $this->cityRepository->findByName($brand['C']);
-                $country = $this->countryRepository->findByName($brand['B']);
-                $musicType = $this->musicTypeRepository->findByName($brand['H']);
-
-                if (is_null($city) && !is_null($brand['C'])) {
-                    $city = new City();
+                if (null !== $brand['C'] && array_key_exists($brand['C'], $cities)) {
+                    $city =  $cities[$brand['C']];
+                } else {
+                    $city = new City($brand['C']);
                     $city->setName($brand['C']);
                     $this->entityManager->persist($city);
-                    $this->entityManager->flush();
+                    $cities[$brand['C']] = $city;
                 }
 
-                if (is_null($country) && !is_null($brand['B'])) {
-                    $country = new Country();
+                if (null !== $brand['B'] && array_key_exists($brand['B'], $countries)) {
+                    $country =  $countries[$brand['B']];
+                } else {
+                    $country = new Country($brand['B']);
                     $country->setName($brand['B']);
                     $this->entityManager->persist($country);
-                    $this->entityManager->flush();
+                    $countries[$brand['B']] = $country;
                 }
 
-                if (is_null($musicType) && !is_null($brand['H'])) {
-                    $musicType = new MusicType();
-                    $musicType->settype($brand['H']);
+                if (null !== $brand['H'] && array_key_exists($brand['H'], $musicTypes)) {
+                    $musicType =  $musicTypes[$brand['H']];
+                } else {
+                    $musicType = new MusicType($brand['H']);
+                    $musicType->setType($brand['H']);
                     $this->entityManager->persist($musicType);
-                    $this->entityManager->flush();
+                    $musicTypes[$brand['H']] = $musicType;
                 }
+
                 $bandToAdd->setGrouName($brand['A']);
-                $bandToAdd->setCountry($country);
-                $bandToAdd->setCity($city);
+                if ($country)
+                    $bandToAdd->setCountry($country);
+                if ($city)
+                    $bandToAdd->setCity($city);
                 $bandToAdd->setBeginningYears($brand['D']);
                 $bandToAdd->setEndingYears($brand['E']);
                 $bandToAdd->setMembers($brand['G']);
-                $bandToAdd->setMusicType($musicType);
+                if ($musicType)
+                    $bandToAdd->setMusicType($musicType);
                 $bandToAdd->setDescription($brand['I']);
                 $this->entityManager->persist($bandToAdd);
                 $this->entityManager->flush();
@@ -95,16 +120,16 @@ class ParseFileController extends AbstractController
                 'success' => true,
                 'message' => 'File uploaded successfully',
             ]);
-        } catch (Error $e) {
-            return new JsonResponse([
-                'success' => false,
-                'message' => 'there was an error',
-                'error' => $e
-            ]);
-        }
+        // } catch (Error $e) {
+        //     return new JsonResponse([
+        //         'success' => false,
+        //         'message' => 'there was an error',
+        //         'error' => $e
+        //     ]);
+        // }
     }
 
-    #[Route('/api/bands', name: 'app_get_all_band', methods:['GET'])]
+    #[Route('/api/bands', name: 'app_get_all_band', methods: ['GET'])]
     public function getAllBand(Request $request): JsonResponse
     {
         $name = $request->query->get('name');
@@ -150,7 +175,7 @@ class ParseFileController extends AbstractController
         }
     }
 
-    #[Route('/api/bands/{id}', name: 'app_get_band_by_id', methods:['GET'])]
+    #[Route('/api/bands/{id}', name: 'app_get_band_by_id', methods: ['GET'])]
     public function getBandById(int $id): JsonResponse
     {
         try {

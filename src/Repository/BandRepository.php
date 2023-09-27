@@ -34,14 +34,4 @@ class BandRepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
-
-//    public function findOneBySomeField($value): ?Band
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

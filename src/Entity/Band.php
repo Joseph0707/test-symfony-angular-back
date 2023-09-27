@@ -20,17 +20,17 @@ class Band
     #[ORM\Column(length: 255)]
     private ?string $groupName = null;
 
-    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'band')]
+    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'band', cascade: ['persist'])]
     private Country $country;
 
-    #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'band')]
+    #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'band', cascade: ['persist'])]
     private City $city;
 
     #[ORM\OneToMany(targetEntity: Founder::class, mappedBy: 'band')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Collection $founder;
 
-    #[ORM\ManyToOne(targetEntity: MusicType::class, inversedBy: 'band')]
+    #[ORM\ManyToOne(targetEntity: MusicType::class, inversedBy: 'band', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     private ?MusicType $musicType;
 
