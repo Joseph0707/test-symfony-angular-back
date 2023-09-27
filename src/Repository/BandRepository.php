@@ -30,7 +30,6 @@ class BandRepository extends ServiceEntityRepository
            ->andWhere('b.groupName LIKE :name')
            ->setParameter('name', '%'.$name.'%')
            ->orderBy('b.id', 'ASC')
-           ->setMaxResults(10)
            ->getQuery()
            ->getResult()
        ;
