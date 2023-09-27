@@ -26,7 +26,7 @@ class ParseFileController extends AbstractController
     {
     }
 
-    public function allCities(): array
+    private function allCities(): array
     {
         $cities = [];
         $allCities = $this->cityRepository->findAll();
@@ -36,7 +36,7 @@ class ParseFileController extends AbstractController
         return $cities;
     }
 
-    public function allCountries(): array
+    private function allCountries(): array
     {
         $countries = [];
         $allCountries = $this->countryRepository->findAll();
@@ -47,7 +47,7 @@ class ParseFileController extends AbstractController
         return $countries;
     }
 
-    public function allMusicTypes(): array
+    private function allMusicTypes(): array
     {
         $musicTypes = [];
         $allMusicType = $this->musicTypeRepository->findAll();

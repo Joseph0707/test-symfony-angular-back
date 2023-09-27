@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Band;
 use App\Repository\BandRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
